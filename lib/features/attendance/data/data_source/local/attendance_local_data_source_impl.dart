@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:workmate/features/attendance/data/data_source/local/ttendance_local_data_source.dart';
+import 'package:workmate/features/attendance/data/data_source/local/attendance_local_data_source.dart';
 
 import '../../../../../core/data/cache/preferences_keys.dart';
 import '../../../../../core/data/cache/shared_preferences_service.dart';

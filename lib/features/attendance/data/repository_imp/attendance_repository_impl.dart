@@ -9,7 +9,7 @@ import '../../domain/enitity/attendanceclockIn.dart';
 import '../../domain/enitity/break_record.dart';
 import '../../domain/enitity/history_attendance.dart';
 import '../../domain/repository/AttendanceRepository.dart';
-import '../data_source/local/ttendance_local_data_source.dart';
+import '../data_source/local/attendance_local_data_source.dart';
 import '../data_source/remote/attendance_remote_data_source.dart';
 import '../mappers/attendance_details_mapper.dart';
 import '../mappers/attendance_mapper.dart';

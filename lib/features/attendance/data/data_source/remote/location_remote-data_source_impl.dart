@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../../domain/enitity/UserLocation.dart';
-import 'LocationRemoteDataSource.dart';
+import 'location_remote-data_source.dart';
 
 class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
   @override
