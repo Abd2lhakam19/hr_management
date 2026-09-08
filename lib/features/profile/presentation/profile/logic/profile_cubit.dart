@@ -7,7 +7,7 @@ import '../../../../../core/presentation/routes/config/app_state_notifier.dart';
 import '../../../../auth/domain/use_cases/load_identifier_use_case.dart';
 import '../../../../auth/domain/use_cases/logout_use_case.dart';
 import '../../../domain/entity/gender.dart';
-import '../../../domain/failure/failure.dart';
+import '../../../domain/failure/profile_failure.dart';
 import '../../../domain/usecase/complete_profile_usecase.dart';
 import '../../../domain/usecase/get_profile_usecase.dart';
 import '../../../domain/usecase/upload_profile_image_usecase.dart';
