@@ -21,5 +21,5 @@ abstract class LeaveRepository {
 
   Future<Either<Failure, LeaveBalanceSummary>> getLeaveBalance({int? year});
 
-  Future<Either<Failure, Unit>> cancelLeaveRequest(int id);
+  Future<Either<Failure, bool>> cancelLeaveRequest(int id);
 }

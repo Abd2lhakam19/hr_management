@@ -73,11 +73,10 @@ class LeaveRepositoryImpl with SafeApiCall implements LeaveRepository {
       );
 
   @override
-  Future<Either<Failure, Unit>> cancelLeaveRequest(int id) =>
+  Future<Either<Failure, bool>> cancelLeaveRequest(int id) =>
       safeApiCall(
         call: () async {
-          await _remoteDataSource.cancelLeaveRequest(id);
-          return unit;
+          return await _remoteDataSource.cancelLeaveRequest(id);
         },
         onException: LeaveFailureMapper.fromException,
       );
