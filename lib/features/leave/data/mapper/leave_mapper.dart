@@ -1,6 +1,6 @@
 import '../../../../core/data/util/parsing.dart';
 import '../../domain/entity/leave_balance.dart';
-import '../../domain/entity/leave_request.dart';
+import '../../domain/entity/leave.dart';
 import '../../domain/entity/leave_status.dart';
 import '../../domain/entity/leave_type.dart';
 import '../datasource/remote/dto/leave_type_dto.dart';
@@ -27,8 +27,8 @@ class LeaveMapper {
   static List<LeaveType> toLeaveTypeDomainList(List<LeaveTypeDto> dtos) =>
       dtos.map(toLeaveTypeDomain).toList();
 
-  static LeaveRequest toDomain(LeaveRequestDto dto) {
-    return LeaveRequest(
+  static Leave toDomain(LeaveRequestDto dto) {
+    return Leave(
       id: dto.id ?? 0,
       leaveType: dto.leaveType != null ? toLeaveTypeDomain(dto.leaveType!) : LeaveType.empty,
       startDate: DataFormat.parseDate(dto.startDate) ?? DateTime.now(),
@@ -44,7 +44,7 @@ class LeaveMapper {
     );
   }
 
-  static List<LeaveRequest> toDomainList(List<LeaveRequestDto> dtos) => dtos.map(toDomain).toList();
+  static List<Leave> toDomainList(List<LeaveRequestDto> dtos) => dtos.map(toDomain).toList();
 
   static LeaveBalanceSummary toBalanceDomain(LeaveBalanceResponseDto dto) {
     return LeaveBalanceSummary(

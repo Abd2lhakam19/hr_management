@@ -1,14 +1,14 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../../core/domain/failure/domain_failure.dart';
 import '../../../../core/domain/failure/validation_error.dart';
-import '../entity/leave_request.dart';
+import '../entity/leave.dart';
 import '../repository/leave_repository.dart';
 
 class SubmitLeaveRequestUseCase {
   final LeaveRepository _repository;
   const SubmitLeaveRequestUseCase(this._repository);
 
-  Future<Either<Failure, LeaveRequest>> call({
+  Future<Either<Failure, Leave>> call({
     required int leaveTypeId,
     required DateTime startDate,
     required DateTime endDate,

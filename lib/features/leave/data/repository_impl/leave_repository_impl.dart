@@ -4,7 +4,7 @@ import '../../../../core/data/network/helper/safe_api_call.dart';
 import '../../../../core/data/util/parsing.dart';
 import '../../../../core/domain/failure/domain_failure.dart';
 import '../../domain/entity/leave_balance.dart';
-import '../../domain/entity/leave_request.dart';
+import '../../domain/entity/leave.dart';
 import '../../domain/entity/leave_status.dart';
 import '../../domain/entity/leave_type.dart';
 import '../../domain/repository/leave_repository.dart';
@@ -30,7 +30,7 @@ class LeaveRepositoryImpl with SafeApiCall implements LeaveRepository {
       );
 
   @override
-  Future<Either<Failure, List<LeaveRequest>>> getMyLeaveRequests({LeaveStatus? status}) =>
+  Future<Either<Failure, List<Leave>>> getMyLeaveRequests({LeaveStatus? status}) =>
       safeApiCall(
         call: () async {
           final dtos = await _remoteDataSource.getMyLeaveRequests(status: status?.name);
@@ -40,7 +40,7 @@ class LeaveRepositoryImpl with SafeApiCall implements LeaveRepository {
       );
 
   @override
-  Future<Either<Failure, LeaveRequest>> submitLeaveRequest({
+  Future<Either<Failure, Leave>> submitLeaveRequest({
     required int leaveTypeId,
     required DateTime startDate,
     required DateTime endDate,

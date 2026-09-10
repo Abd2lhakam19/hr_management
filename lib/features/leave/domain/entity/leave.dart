@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'leave_status.dart';
 import 'leave_type.dart';
 
-class LeaveRequest extends Equatable {
+class Leave extends Equatable {
   final int id;
   final LeaveType leaveType;
   final DateTime startDate;
@@ -17,7 +17,7 @@ class LeaveRequest extends Equatable {
   final DateTime? cancelledAt;
   final DateTime? createdAt;
 
-  const LeaveRequest({
+  const Leave({
     required this.id,
     required this.leaveType,
     required this.startDate,
