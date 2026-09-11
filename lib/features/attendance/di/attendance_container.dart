@@ -47,7 +47,9 @@ Future<void> initAttendance() async {
     ),
   );
   sl.registerLazySingleton<LocationRepository>(
-        () => LocationRepositoryImpl(sl<LocationRemoteDataSource>()),
+        () => LocationRepositoryImpl(
+      dataSource: sl<LocationRemoteDataSource>(),
+    ),
   );
 
   // 3. Use Cases

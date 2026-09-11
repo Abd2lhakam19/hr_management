@@ -1,5 +1,5 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' hide LocationServiceDisabledException;
+import '../../../../../core/data/exception/app_exception.dart';
 import '../../../domain/entity/UserLocation.dart';
 import 'location_remote-data_source.dart';
 
@@ -8,7 +8,7 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
   Future<Location> getCurrentLocation() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      throw Exception("LOCATION_SERVICE_DISABLED");
+      throw const LocationServiceDisabledException();
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
@@ -16,12 +16,12 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        throw Exception("PERMISSION_DENIED");
+        throw const LocationPermissionDeniedException();
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      throw Exception("PERMISSION_DENIED_FOREVER");
+      throw const LocationPermissionDeniedForeverException();
     }
 
     final position = await Geolocator.getCurrentPosition(
@@ -35,7 +35,10 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
   }
 
   @override
-  Future<double> getDistanceBetweenLocations(Location location1, Location location2) async {
+  Future<double> getDistanceBetweenLocations(
+      Location location1,
+      Location location2,
+      ) async {
     return Geolocator.distanceBetween(
       location1.latitude,
       location1.longitude,
