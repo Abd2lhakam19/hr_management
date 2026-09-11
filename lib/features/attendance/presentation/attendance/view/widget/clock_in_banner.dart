@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../../../core/presentation/design_system/components/custom_primary_button.dart';
@@ -54,7 +55,7 @@ class ClockInBanner extends StatelessWidget {
               items: [
                 StateItemModel(
                   label: "Today".tr(),
-                  value: "${attendanceScreenState.todayWorkingHours} Hrs",
+                  valueWidget: const _TodayWorkingHoursValue(),
                   icon: Icon(
                     Iconsax.clock5,
                     color: context.colors.gray300,
@@ -203,5 +204,24 @@ class ClockInBanner extends StatelessWidget {
           ),
         ];
     }
+  }
+}
+
+class _TodayWorkingHoursValue extends StatelessWidget {
+  const _TodayWorkingHoursValue();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<AttendanceScreenCubit, AttendanceScreenState, String>(
+      selector: (state) => state.todayWorkingHours,
+      builder: (context, todayWorkingHours) {
+        return Text(
+          "$todayWorkingHours Hrs",
+          style: context.textTheme.titleLargeFont.copyWith(
+            color: context.colors.textPrimary,
+          ),
+        );
+      },
+    );
   }
 }

@@ -19,6 +19,7 @@ class ClockInFlowState extends Equatable {
 
   final ClockInFlowStatus status;
   final String? errorMessage;
+  final ClockInFlowStatus? previousStatus;
 
   final Location? userLocation;
   final bool isPopupVisible;
@@ -50,7 +51,7 @@ class ClockInFlowState extends Equatable {
     this.isFlashOn = false,
     this.currentZoomLevel = 1.0,
     this.maxZoomLevel = 1.0,
-
+    this.previousStatus,
     this.notes,
     this.submissionTime,
   });
@@ -59,6 +60,7 @@ class ClockInFlowState extends Equatable {
     ClockInFlowStatus? status,
     String? errorMessage,
     bool clearErrorMessage = false,
+    ClockInFlowStatus? previousStatus,
     Location? userLocation,
     bool? isPopupVisible,
     String? userName,
@@ -75,6 +77,7 @@ class ClockInFlowState extends Equatable {
       status: status ?? this.status,
       errorMessage:
           clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      previousStatus: previousStatus ?? this.previousStatus,
       userLocation: userLocation ?? this.userLocation,
       isPopupVisible: isPopupVisible ?? this.isPopupVisible,
       userName: userName ?? this.userName,
@@ -111,6 +114,7 @@ class ClockInFlowState extends Equatable {
   List<Object?> get props => [
         status,
         errorMessage,
+        previousStatus,
         userLocation,
         isPopupVisible,
         userName,

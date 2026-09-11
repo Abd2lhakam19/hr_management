@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:workmate/core/presentation/design_system/theme/helper/theme_extention.dart';
@@ -237,14 +238,12 @@ class SelfieAttendanceCard extends StatelessWidget {
         fit: BoxFit.cover,
       );
     }
-    return Image.network(
-      imageUrl,
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
       fit: BoxFit.cover,
-      loadingBuilder: (context, child, progress) {
-        if (progress == null) return child;
-        return const Center(child: CircularProgressIndicator());
-      },
-      errorBuilder: (_, __, ___) => Container(
+      placeholder: (context, url) =>
+          const Center(child: CircularProgressIndicator()),
+      errorWidget: (_, __, ___) => Container(
         color: Colors.grey.shade200,
         child: const Icon(
           Icons.broken_image_outlined,

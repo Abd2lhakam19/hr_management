@@ -67,6 +67,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
       onError: (e) {
         updateState(
           (s) => s.copyWith(
+            previousStatus: s.status,
             status: ClockInFlowStatus.error,
             errorMessage: e.message,
           ),
@@ -89,6 +90,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
       onError: (e) {
         updateState(
           (s) => s.copyWith(
+            previousStatus: s.status,
             status: ClockInFlowStatus.error,
             errorMessage: e.message,
           ),
@@ -123,6 +125,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
     } catch (e) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "Camera initialization failed",
         ),
@@ -166,6 +169,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
         !_cameraController!.value.isInitialized) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "Camera not ready",
         ),
@@ -189,6 +193,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
     } catch (e) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "Failed to capture photo: $e",
         ),
@@ -208,6 +213,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
     } catch (e) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "Failed to toggle flash",
         ),
@@ -238,6 +244,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
     } catch (e) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "Failed to adjust zoom",
         ),
@@ -263,12 +270,15 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
   }
 
   Future<void> submitClockIn() async {
+    if (state.isSubmitting) return;
+
     final image = state.capturedImage;
     final location = state.userLocation;
 
     if (image == null || location == null) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "image_proof or location Invalid",
         ),
@@ -281,6 +291,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
     if (!ImagePickerHelper.isValidImageExtension(imageFile)) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "Invalid image format",
         ),
@@ -291,6 +302,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
     if (!ImagePickerHelper.isFileSizeValid(imageFile)) {
       updateState(
         (s) => s.copyWith(
+          previousStatus: s.status,
           status: ClockInFlowStatus.error,
           errorMessage: "Image size too large",
         ),
@@ -323,6 +335,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
       onError: (e) {
         updateState(
           (s) => s.copyWith(
+            previousStatus: s.status,
             status: ClockInFlowStatus.error,
             errorMessage: e.message,
           ),
@@ -335,7 +348,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
     if (state.hasError) {
       updateState(
         (s) => s.copyWith(
-          status: ClockInFlowStatus.locationReady,
+          status: state.previousStatus ?? ClockInFlowStatus.locationReady,
           clearErrorMessage: true,
         ),
       );

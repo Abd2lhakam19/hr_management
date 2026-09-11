@@ -18,55 +18,67 @@ class AttendanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AttendanceScreenCubit, AttendanceScreenState>(
+    final cubit = context.read<AttendanceScreenCubit>();
+
+    return BlocListener<AttendanceScreenCubit, AttendanceScreenState>(
+      listenWhen: (previous, current) =>
+          current.apiError != null && current.apiError != previous.apiError,
       listener: (context, state) {
-        if (state.apiError != null) {
-          SnackBarHelper.showError(context, state.apiError!);
-        }
+        SnackBarHelper.showError(context, state.apiError!);
       },
-      builder: (context, state) {
-        final cubit = context.read<AttendanceScreenCubit>();
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: context.colors.gray100,
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: BlocBuilder<AttendanceScreenCubit, AttendanceScreenState>(
+                  buildWhen: (previous, current) =>
+                      previous.attendanceStatus != current.attendanceStatus ||
+                      previous.payPeriodWorkingHours !=
+                          current.payPeriodWorkingHours,
+                  builder: (context, state) {
+                    return ClockInBanner(
+                      attendanceScreenCubit: cubit,
+                      attendanceScreenState: state,
 
-        return SafeArea(
-          child: Scaffold(
-            backgroundColor: context.colors.gray100,
-            body: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: ClockInBanner(
-                    attendanceScreenCubit: cubit,
-                    attendanceScreenState: state,
+                      onClockInPressed: () {
+                        context.push(RouteNames.clockInMap);
+                      },
 
-                    onClockInPressed: ()  {
-                      context.push(RouteNames.clockInMap);
-                    },
+                      onClockOutPressed: () {
+                        cubit.clockOutAttendance();
+                      },
 
-                    onClockOutPressed: ()  {
-                      cubit.clockOutAttendance();
-                    },
+                      onBreakPressed: () {
+                        cubit.startAttendanceBreak();
+                      },
 
-                    onBreakPressed: ()  {
-                      cubit.startAttendanceBreak();
-                    },
-
-                    onBackToWorkPressed: () async {
-                      cubit.endAttendanceBreak();
-                    },
-                  ),
+                      onBackToWorkPressed: () async {
+                        cubit.endAttendanceBreak();
+                      },
+                    );
+                  },
                 ),
+              ),
 
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 16,
-                  ),
-                  sliver: _buildHistorySliver(context, state),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 16,
                 ),
-              ],
-            ),
+                sliver: BlocBuilder<AttendanceScreenCubit, AttendanceScreenState>(
+                  buildWhen: (previous, current) =>
+                      previous.isLoading != current.isLoading ||
+                      previous.historyAttendanceCard !=
+                          current.historyAttendanceCard,
+                  builder: (context, state) => _buildHistorySliver(context, state),
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 

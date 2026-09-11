@@ -141,6 +141,7 @@ class AttendanceScreenCubit extends BaseCubit<AttendanceScreenState> {
   }
 
   Future<void> endAttendanceBreak() async {
+    if (_isBusy) return;
     _isBusy = true;
     await execute(
       onLoading: () => updateState(
@@ -160,6 +161,7 @@ class AttendanceScreenCubit extends BaseCubit<AttendanceScreenState> {
   }
 
   Future<void> clockOutAttendance() async {
+    if (_isBusy) return;
     _isBusy = true;
     await execute(
       onLoading: () => updateState(
