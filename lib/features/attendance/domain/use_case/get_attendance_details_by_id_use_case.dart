@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/domain/failure/domain_failure.dart';
-import '../enitity/attendance_details_entity.dart';
+import '../entity/attendance_details_entity.dart';
 import '../repository/AttendanceRepository.dart';
 
 class GetAttendanceDetailsByIdUseCase {

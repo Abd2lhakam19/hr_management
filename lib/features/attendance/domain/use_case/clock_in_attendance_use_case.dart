@@ -1,8 +1,8 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/domain/failure/domain_failure.dart';
-import '../enitity/attendance_record.dart';
-import '../enitity/attendanceclockIn.dart';
+import '../entity/attendance_record.dart';
+import '../entity/attendanceclockIn.dart';
 import '../repository/AttendanceRepository.dart';
 
 class ClockInAttendanceUseCase {

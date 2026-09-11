@@ -1,4 +1,4 @@
-import '../../../domain/enitity/UserInfo.dart';
+import '../../../domain/entity/UserInfo.dart';
 
 abstract class AttendanceLocalDataSource {
   Future<UserInfo?> getCachedUserInfo();

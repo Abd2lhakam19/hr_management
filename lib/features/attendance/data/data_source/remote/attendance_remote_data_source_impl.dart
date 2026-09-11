@@ -83,7 +83,7 @@ class AttendanceRemoteDataSourceImpl implements AttendanceRemoteDataSource {
   }
 
   @override
-  Future<AttendanceRecordResponse> attendanceToday() async {
+  Future<AttendanceRecordResponse?> attendanceToday() async {
     final response = await _dioClient.get(ApiConstants.attendanceToday);
 
     final apiResponse = ApiResponse.fromJson(
@@ -91,7 +91,7 @@ class AttendanceRemoteDataSourceImpl implements AttendanceRemoteDataSource {
           (data) => AttendanceRecordResponse.fromJson(data),
     );
 
-    return  apiResponse.data ?? AttendanceRecordResponse();
+    return  apiResponse.data;
   }
 
   @override

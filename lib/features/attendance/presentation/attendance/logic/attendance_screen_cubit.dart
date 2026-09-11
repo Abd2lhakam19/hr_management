@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import '../../../../../core/presentation/base_viewmodel/base_cubit.dart';
-import '../../../domain/enitity/attendance_record.dart';
+import '../../../domain/entity/attendance_record.dart';
 import '../../../domain/use_case/EndAttendanceBreakUseCase.dart';
 import '../../../domain/use_case/StartAttendanceBreakUseCase.dart';
 import '../../../domain/use_case/attendance_history_use_case.dart';
@@ -118,6 +118,7 @@ class AttendanceScreenCubit extends BaseCubit<AttendanceScreenState> {
   // ============================================================
 
   Future<void> startAttendanceBreak() async {
+    if (_isBusy) return;
     _isBusy = true;
     await execute(
       onLoading: () => updateState(

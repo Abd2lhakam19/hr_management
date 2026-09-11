@@ -1,104 +1,117 @@
-import '../../domain/enitity/attendance_durations.dart';
-import '../../domain/enitity/attendance_punch.dart';
-import '../../domain/enitity/attendance_record.dart';
-import '../../domain/enitity/attendanceclockIn.dart';
-import '../../domain/enitity/break_record.dart';
-import '../../domain/enitity/duration_value.dart';
-import '../../domain/enitity/history_attendance.dart';
+import '../../domain/entity/attendance_durations.dart';
+import '../../domain/entity/attendance_punch.dart';
+import '../../domain/entity/attendance_record.dart';
+import '../../domain/entity/attendanceclockIn.dart';
+import '../../domain/entity/break_record.dart';
+import '../../domain/entity/duration_value.dart';
+import '../../domain/entity/history_attendance.dart';
 import '../data_source/remote/dto/attendance_record_response.dart';
 import '../data_source/remote/dto/break_response.dart';
 import '../data_source/remote/dto/clock_in_attendance_request.dart';
 import '../data_source/remote/dto/history_attendance_response.dart';
 
-class AttendanceMapper {
-  static DurationValue toDomainDurationValue(DurationValueResponse? response) {
+const _zeroDuration = DurationValue(totalSeconds: 0, formatted: '00:00:00');
+
+extension DurationValueResponseMapper on DurationValueResponse {
+  DurationValue toEntity() {
     return DurationValue(
-      totalSeconds: response?.totalSeconds ?? 0,
-      formatted: response?.formatted ?? '00:00:00',
+      totalSeconds: totalSeconds ?? 0,
+      formatted: formatted ?? '00:00:00',
     );
   }
+}
 
-  static AttendanceDurations toDomainDurations(
-    AttendanceDurationsResponse? response,
-  ) {
+extension AttendanceDurationsResponseMapper on AttendanceDurationsResponse {
+  AttendanceDurations toEntity() {
     return AttendanceDurations(
-      worked: toDomainDurationValue(response?.worked),
-      overtime: toDomainDurationValue(response?.overtime),
-      breaks: toDomainDurationValue(response?.breaks),
+      worked: worked?.toEntity() ?? _zeroDuration,
+      overtime: overtime?.toEntity() ?? _zeroDuration,
+      breaks: breaks?.toEntity() ?? _zeroDuration,
     );
   }
+}
 
-  static AttendancePunch toDomainPunch(AttendancePunchResponse? response) {
+extension AttendancePunchResponseMapper on AttendancePunchResponse {
+  AttendancePunch toEntity() {
     return AttendancePunch(
-      time: response?.time ?? '',
-      location: response?.location ?? '',
-      ip: response?.ip ?? '',
+      time: time ?? '',
+      location: location ?? '',
+      ip: ip ?? '',
     );
   }
+}
 
-  static AttendanceRecord toDomainRecord(AttendanceRecordResponse response) {
+const _emptyPunch = AttendancePunch(time: '', location: '', ip: '');
+const _emptyDurations = AttendanceDurations(
+  worked: _zeroDuration,
+  overtime: _zeroDuration,
+  breaks: _zeroDuration,
+);
+
+extension AttendanceRecordResponseMapper on AttendanceRecordResponse {
+  AttendanceRecord toEntity() {
     return AttendanceRecord(
-      id: response.id ?? 0,
-      date: response.date ?? '',
-      status: response.status ?? '',
-      hasActiveBreak: response.hasActiveBreak ?? false,
-      notes: response.notes ?? '',
-      checkIn: toDomainPunch(response.checkIn),
-      checkOut: toDomainPunch(response.checkOut),
-      durations: toDomainDurations(response.durations),
-      proofImage: response.proofImage,
+      id: id ?? 0,
+      date: date ?? '',
+      status: status ?? '',
+      hasActiveBreak: hasActiveBreak ?? false,
+      notes: notes ?? '',
+      checkIn: checkIn?.toEntity() ?? _emptyPunch,
+      checkOut: checkOut?.toEntity() ?? _emptyPunch,
+      durations: durations?.toEntity() ?? _emptyDurations,
+      proofImage: proofImage,
     );
   }
+}
 
-  static BreakRecord toDomainBreak(BreakResponse response) {
+extension BreakResponseMapper on BreakResponse {
+  BreakRecord toEntity() {
     return BreakRecord(
-      id: response.id ?? 0,
-      attendanceId: response.attendanceId ?? 0,
-      startTime: response.time?.start ?? '',
-      endTime: response.time?.end,
-      reason: response.reason ?? '',
-      duration: response.duration == null
-          ? null
-          : toDomainDurationValue(response.duration),
-      isActive: response.isActive ?? false,
+      id: id ?? 0,
+      attendanceId: attendanceId ?? 0,
+      startTime: time?.start ?? '',
+      endTime: time?.end,
+      reason: reason ?? '',
+      duration: duration?.toEntity(),
+      isActive: isActive ?? false,
     );
   }
+}
 
-  static HistoryAttendance toDomainHistory(
-    HistoryAttendanceResponse response,
-  ) {
+extension HistoryAttendanceResponseMapper on HistoryAttendanceResponse {
+  HistoryAttendance toEntity() {
     return HistoryAttendance(
-      startDate: response.startDate ?? '',
-      endDate: response.endDate ?? '',
-      month: response.month ?? 0,
-      year: response.year ?? 0,
-      days: (response.records ?? const <AttendanceRecordResponse>[])
-          .map(toDomainRecord)
+      startDate: startDate ?? '',
+      endDate: endDate ?? '',
+      month: month ?? 0,
+      year: year ?? 0,
+      days: (records ?? const <AttendanceRecordResponse>[])
+          .map((record) => record.toEntity())
           .toList(),
-      summary: toDomainSummary(
-        response.summary ?? const HistorySummaryResponse(),
-      ),
+      summary: (summary ?? const HistorySummaryResponse()).toEntity(),
     );
   }
+}
 
-  static Summary toDomainSummary(HistorySummaryResponse response) {
+extension HistorySummaryResponseMapper on HistorySummaryResponse {
+  Summary toEntity() {
     return Summary(
-      totalDays: response.totalDays ?? 0,
-      presentDays: response.presentDays ?? 0,
-      lateDays: response.lateDays ?? 0,
-      absentDays: response.absentDays ?? 0,
-      durations: toDomainDurations(response.durations),
+      totalDays: totalDays ?? 0,
+      presentDays: presentDays ?? 0,
+      lateDays: lateDays ?? 0,
+      absentDays: absentDays ?? 0,
+      durations: durations?.toEntity() ?? _emptyDurations,
     );
   }
+}
 
-  static ClockInAttendanceRequest toDtoClockInRequest(
-    ClockInAttendance attendanceClockIn,
-  ) {
+extension ClockInAttendanceDtoMapper on ClockInAttendance {
+  ClockInAttendanceRequest toDto() {
     return ClockInAttendanceRequest(
-      latitude: attendanceClockIn.latitude,
-      longitude: attendanceClockIn.longitude,
-      notes: attendanceClockIn.notes ?? '',
-      proofImage: attendanceClockIn.proofImage,
+      latitude: latitude,
+      longitude: longitude,
+      notes: notes ?? '',
+      proofImage: proofImage,
     );
   }
 }

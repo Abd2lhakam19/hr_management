@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
-import '../../../domain/enitity/UserLocation.dart';
+import '../../../domain/entity/UserLocation.dart';
 
 enum ClockInFlowStatus {
   initial,

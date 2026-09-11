@@ -7,7 +7,7 @@ import 'dto/history_attendance_response.dart';
 abstract class AttendanceRemoteDataSource {
   Future<HistoryAttendanceResponse> attendanceHistory();
 
-  Future<AttendanceRecordResponse> attendanceToday();
+  Future<AttendanceRecordResponse?> attendanceToday();
 
   Future<AttendanceRecordResponse> clockInAttendance(
     ClockInAttendanceRequest clockInAttendanceRequest,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/presentation/design_system/model/history_card_model.dart';
-import '../../../domain/enitity/attendance_record.dart';
+import '../../../domain/entity/attendance_record.dart';
 import '../../utils/duration_format_utils.dart';
 class AttendanceHistoryMapper {
   static List<HistoryCardModel> toHistoryCards(List<AttendanceRecord> days) {

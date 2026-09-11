@@ -1,4 +1,4 @@
-import '../../../domain/enitity/attendance_details_entity.dart';
+import '../../../domain/entity/attendance_details_entity.dart';
 
 class DetailsHistoryCardState {
   final bool isLoading;

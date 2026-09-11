@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import '../../../../core/domain/failure/domain_failure.dart';
-import '../../domain/enitity/UserLocation.dart';
+import '../../domain/entity/UserLocation.dart';
 import '../../domain/repository/LocationRepository.dart';
 import '../data_source/remote/location_remote-data_source.dart';
 

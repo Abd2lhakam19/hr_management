@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/domain/failure/domain_failure.dart';
-import '../enitity/history_attendance.dart';
+import '../entity/history_attendance.dart';
 import '../repository/AttendanceRepository.dart';
 
 class GetAttendanceHistoryUseCase {

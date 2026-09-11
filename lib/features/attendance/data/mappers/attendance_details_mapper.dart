@@ -1,8 +1,8 @@
-import '../data_source/remote/dto/attendance_details_dto.dart'; // ⚠️ عدّلي المسار لو مختلف
-import '../../domain/enitity/attendance_details_entity.dart';
-import '../../domain/enitity/attendance_punch.dart';
-import '../../domain/enitity/attendance_durations.dart';
-import '../../domain/enitity/duration_value.dart';
+import '../data_source/remote/dto/attendance_details_dto.dart';
+import '../../domain/entity/attendance_details_entity.dart';
+import '../../domain/entity/attendance_punch.dart';
+import '../../domain/entity/attendance_durations.dart';
+import '../../domain/entity/duration_value.dart';
 
 extension AttendanceDetailsDataDtoMapper on AttendanceDetailsDataDto {
   AttendanceDetailsEntity toEntity() {

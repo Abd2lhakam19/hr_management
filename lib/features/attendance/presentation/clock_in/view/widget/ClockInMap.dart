@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../../../../core/config/app_config.dart';
 import '../../../../../../core/presentation/design_system/components/custom_clockin_area_map_user.dart';
 import '../../../../../../core/presentation/design_system/theme/helper/extention_colors.dart';
 import '../../../../../../core/presentation/design_system/theme/helper/theme_extention.dart';
@@ -32,7 +33,7 @@ class ClockInMap extends StatelessWidget {
       children: [
         TileLayer(
           urlTemplate:
-              'https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.png?key=54uUzuarknk6ofvWlZlV',
+          'https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.png?key=${AppConfig.maptilerApiKey}',
         ),
 
         CircleLayer(

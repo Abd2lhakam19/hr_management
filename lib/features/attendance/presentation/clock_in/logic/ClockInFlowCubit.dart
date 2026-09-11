@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 
 import '../../../../../core/presentation/base_viewmodel/base_cubit.dart';
 import '../../../../../core/presentation/util/image_picker_helper.dart';
-import '../../../domain/enitity/attendanceclockIn.dart';
+import '../../../domain/entity/attendanceclockIn.dart';
 import '../../../domain/use_case/GetCurrentLocationUseCase.dart';
 import '../../../domain/use_case/clock_in_attendance_use_case.dart';
 import '../../../domain/use_case/getUserInfoUseCase.dart';
@@ -270,7 +270,7 @@ class ClockInFlowCubit extends BaseCubit<ClockInFlowState> {
       updateState(
         (s) => s.copyWith(
           status: ClockInFlowStatus.error,
-          errorMessage: "image_proof or location InValiad",
+          errorMessage: "image_proof or location Invalid",
         ),
       );
       return;

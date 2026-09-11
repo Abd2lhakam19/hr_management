@@ -1,12 +1,12 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/domain/failure/domain_failure.dart';
-import '../enitity/UserInfo.dart';
-import '../enitity/attendance_details_entity.dart';
-import '../enitity/attendance_record.dart';
-import '../enitity/attendanceclockIn.dart';
-import '../enitity/break_record.dart';
-import '../enitity/history_attendance.dart';
+import '../entity/UserInfo.dart';
+import '../entity/attendance_details_entity.dart';
+import '../entity/attendance_record.dart';
+import '../entity/attendanceclockIn.dart';
+import '../entity/break_record.dart';
+import '../entity/history_attendance.dart';
 
 abstract class AttendanceRepository {
   Future<Either<Failure, HistoryAttendance>> attendanceHistory();

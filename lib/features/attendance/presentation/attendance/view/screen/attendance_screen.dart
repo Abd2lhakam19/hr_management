@@ -37,15 +37,15 @@ class AttendanceScreen extends StatelessWidget {
                     attendanceScreenCubit: cubit,
                     attendanceScreenState: state,
 
-                    onClockInPressed: () async {
+                    onClockInPressed: ()  {
                       context.push(RouteNames.clockInMap);
                     },
 
-                    onClockOutPressed: () async {
+                    onClockOutPressed: ()  {
                       cubit.clockOutAttendance();
                     },
 
-                    onBreakPressed: () async {
+                    onBreakPressed: ()  {
                       cubit.startAttendanceBreak();
                     },
 

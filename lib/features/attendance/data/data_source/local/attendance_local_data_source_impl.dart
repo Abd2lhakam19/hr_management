@@ -4,7 +4,7 @@ import 'package:workmate/features/attendance/data/data_source/local/attendance_l
 
 import '../../../../../core/data/cache/preferences_keys.dart';
 import '../../../../../core/data/cache/shared_preferences_service.dart';
-import '../../../domain/enitity/UserInfo.dart';
+import '../../../domain/entity/UserInfo.dart';
 
 class AttendanceLocalDataSourceImpl implements AttendanceLocalDataSource {
   final PreferencesService _preferencesService;

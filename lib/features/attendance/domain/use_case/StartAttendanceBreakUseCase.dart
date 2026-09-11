@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/domain/failure/domain_failure.dart';
-import '../enitity/break_record.dart';
+import '../entity/break_record.dart';
 import '../repository/AttendanceRepository.dart';
 
 class StartAttendanceBreakUseCase {

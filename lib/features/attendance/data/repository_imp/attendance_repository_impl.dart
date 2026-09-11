@@ -2,12 +2,15 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/data/network/helper/safe_api_call.dart';
 import '../../../../core/domain/failure/domain_failure.dart';
-import '../../domain/enitity/UserInfo.dart';
-import '../../domain/enitity/attendance_details_entity.dart';
-import '../../domain/enitity/attendance_record.dart';
-import '../../domain/enitity/attendanceclockIn.dart';
-import '../../domain/enitity/break_record.dart';
-import '../../domain/enitity/history_attendance.dart';
+import '../../domain/entity/UserInfo.dart';
+import '../../domain/entity/attendance_details_entity.dart';
+import '../../domain/entity/attendance_durations.dart';
+import '../../domain/entity/attendance_punch.dart';
+import '../../domain/entity/attendance_record.dart';
+import '../../domain/entity/attendanceclockIn.dart';
+import '../../domain/entity/break_record.dart';
+import '../../domain/entity/duration_value.dart';
+import '../../domain/entity/history_attendance.dart';
 import '../../domain/repository/AttendanceRepository.dart';
 import '../data_source/local/attendance_local_data_source.dart';
 import '../data_source/remote/attendance_remote_data_source.dart';
@@ -21,14 +24,14 @@ class AttendanceRepositoryImpl with SafeApiCall implements AttendanceRepository 
   const AttendanceRepositoryImpl({
     required AttendanceRemoteDataSource attendanceRemoteDataSource,
     required AttendanceLocalDataSource attendanceLocalDataSource,
-  }) : _attendanceRemoteDataSource = attendanceRemoteDataSource
-    , _attendanceLocalDataSource = attendanceLocalDataSource;
+  })  : _attendanceRemoteDataSource = attendanceRemoteDataSource,
+        _attendanceLocalDataSource = attendanceLocalDataSource;
 
   @override
   Future<Either<Failure, HistoryAttendance>> attendanceHistory() async {
-   return safeApiCall(call: () async {
+    return safeApiCall(call: () async {
       final response = await _attendanceRemoteDataSource.attendanceHistory();
-      return AttendanceMapper.toDomainHistory(response);
+      return response.toEntity();
     });
   }
 
@@ -36,7 +39,24 @@ class AttendanceRepositoryImpl with SafeApiCall implements AttendanceRepository 
   Future<Either<Failure, AttendanceRecord>> getTodayAttendance() async {
     return safeApiCall(call: () async {
       final response = await _attendanceRemoteDataSource.attendanceToday();
-      return AttendanceMapper.toDomainRecord(response);
+      if (response == null) {
+        return AttendanceRecord(
+          id: 0,
+          date: '',
+          status: '',
+          hasActiveBreak: false,
+          notes: '',
+          checkIn: const AttendancePunch(time: '', location: '', ip: ''),
+          checkOut: const AttendancePunch(time: '', location: '', ip: ''),
+          durations: AttendanceDurations(
+            worked: const DurationValue(totalSeconds: 0, formatted: '00:00:00'),
+            overtime: const DurationValue(totalSeconds: 0, formatted: '00:00:00'),
+            breaks: const DurationValue(totalSeconds: 0, formatted: '00:00:00'),
+          ),
+          proofImage: null,
+        );
+      }
+      return response.toEntity();
     });
   }
 
@@ -46,25 +66,25 @@ class AttendanceRepositoryImpl with SafeApiCall implements AttendanceRepository 
   }) async {
     return safeApiCall(call: () async {
       final response = await _attendanceRemoteDataSource.clockInAttendance(
-        AttendanceMapper.toDtoClockInRequest(clockInAttendance),
+        clockInAttendance.toDto(),
       );
-      return AttendanceMapper.toDomainRecord(response);
+      return response.toEntity();
     });
   }
 
   @override
   Future<Either<Failure, AttendanceRecord>> attendanceClockOut() async {
-   return safeApiCall(call: () async {
+    return safeApiCall(call: () async {
       final response = await _attendanceRemoteDataSource.attendanceClockOut();
-      return AttendanceMapper.toDomainRecord(response);
+      return response.toEntity();
     });
-   }
+  }
 
   @override
   Future<Either<Failure, BreakRecord>> startAttendanceBreak() async {
-   return safeApiCall(call: () async {
+    return safeApiCall(call: () async {
       final response = await _attendanceRemoteDataSource.startAttendanceBreak();
-      return AttendanceMapper.toDomainBreak(response);
+      return response.toEntity();
     });
   }
 
@@ -72,9 +92,10 @@ class AttendanceRepositoryImpl with SafeApiCall implements AttendanceRepository 
   Future<Either<Failure, BreakRecord>> endAttendanceBreak() async {
     return safeApiCall(call: () async {
       final response = await _attendanceRemoteDataSource.endAttendanceBreak();
-      return AttendanceMapper.toDomainBreak(response);
+      return response.toEntity();
     });
   }
+
   @override
   Future<Either<Failure, AttendanceDetailsEntity>> getAttendanceDetailsById(
       String id,
@@ -85,18 +106,15 @@ class AttendanceRepositoryImpl with SafeApiCall implements AttendanceRepository 
       return response.toEntity();
     });
   }
+
   @override
   Future<Either<Failure, UserInfo>> getUserInfo() async {
-    try {
+    return safeApiCall(call: () async {
       final cachedUser = await _attendanceLocalDataSource.getCachedUserInfo();
-
       if (cachedUser == null) {
-        return Left(UnknownFailure());
+        throw Exception('NO_CACHED_USER_INFO');
       }
-
-      return Right(cachedUser);
-    } catch (e) {
-      return Left(UnknownFailure());
-    }
+      return cachedUser;
+    });
   }
 }
