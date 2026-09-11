@@ -11,8 +11,8 @@ import '../domain/usecase/get_leave_balance_usecase.dart';
 import '../domain/usecase/get_leave_types_usecase.dart';
 import '../domain/usecase/get_my_leave_requests_usecase.dart';
 import '../domain/usecase/submit_leave_request_usecase.dart';
-import '../presentation/logic/leave_summary_cubit.dart';
-import '../presentation/logic/submit_leave_cubit.dart';
+import '../presentation/summary/logic/leave_summary_cubit.dart';
+import '../presentation/submit/logic/submit_leave_cubit.dart';
 
 Future<void> initLeave() async {
   // data
@@ -46,6 +46,7 @@ Future<void> initLeave() async {
         () => LeaveSummaryCubit(
       getLeaveBalanceUseCase: sl<GetLeaveBalanceUseCase>(),
       getMyLeaveRequestsUseCase: sl<GetMyLeaveRequestsUseCase>(),
+      cancelLeaveRequestUseCase: sl<CancelLeaveRequestUseCase>(),
     ),
   );
 

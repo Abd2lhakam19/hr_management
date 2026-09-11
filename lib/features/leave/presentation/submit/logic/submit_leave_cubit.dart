@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:workmate/features/leave/presentation/logic/submit_leave_state.dart';
+import 'package:workmate/features/leave/presentation/submit/logic/submit_leave_state.dart';
 
-import '../../../../core/domain/failure/domain_failure.dart';
-import '../../../../core/presentation/base_viewmodel/base_cubit.dart';
-import '../../domain/entity/leave_type.dart';
-import '../../domain/usecase/get_leave_types_usecase.dart';
-import '../../domain/usecase/submit_leave_request_usecase.dart';
-import '../mapper/leave_failure_ui_mapper.dart';
+import '../../../../../core/domain/failure/domain_failure.dart';
+import '../../../../../core/presentation/base_viewmodel/base_cubit.dart';
+import '../../../domain/entity/leave_type.dart';
+import '../../../domain/usecase/get_leave_types_usecase.dart';
+import '../../../domain/usecase/submit_leave_request_usecase.dart';
+import '../../mapper/leave_failure_ui_mapper.dart';
 
 class SubmitLeaveCubit extends BaseCubit<SubmitLeaveState> {
   final GetLeaveTypesUseCase _getLeaveTypesUseCase;
@@ -38,8 +38,19 @@ class SubmitLeaveCubit extends BaseCubit<SubmitLeaveState> {
     updateState((s) => s.copyWith(selectedLeaveType: type, clearLeaveTypeError: true));
   }
 
-  void onDateRangeChanged(DateTime start, DateTime end) {
-    updateState((s) => s.copyWith(startDate: start, endDate: end, clearDateError: true));
+  void onStartDateChanged(DateTime date) {
+    updateState((s) {
+      final endStillValid = s.endDate != null && !s.endDate!.isBefore(date);
+      return s.copyWith(
+        startDate: date,
+        clearEndDate: !endStillValid,
+        clearDateError: true,
+      );
+    });
+  }
+
+  void onEndDateChanged(DateTime date) {
+    updateState((s) => s.copyWith(endDate: date, clearDateError: true));
   }
 
   void onEmergencyContactChanged(String value) {

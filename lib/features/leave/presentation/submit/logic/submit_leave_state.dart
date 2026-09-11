@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/util/parsing.dart';
-import '../../domain/entity/leave_type.dart';
+import '../../../../../core/data/util/parsing.dart';
+import '../../../domain/entity/leave_type.dart';
 
 class SubmitLeaveState extends Equatable {
   final List<LeaveType> leaveTypes;
@@ -63,13 +63,15 @@ class SubmitLeaveState extends Equatable {
     bool clearDescriptionError = false,
     bool clearAllErrors = false,
     bool clearError = false,
+    bool clearStartDate = false,
+    bool clearEndDate = false,
   }) {
     return SubmitLeaveState(
       leaveTypes: leaveTypes ?? this.leaveTypes,
       isLoadingLeaveTypes: isLoadingLeaveTypes ?? this.isLoadingLeaveTypes,
       selectedLeaveType: selectedLeaveType ?? this.selectedLeaveType,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
+      startDate: clearStartDate ? null : (startDate ?? this.startDate),
+      endDate: clearEndDate ? null : (endDate ?? this.endDate),
       emergencyContact: emergencyContact ?? this.emergencyContact,
       description: description ?? this.description,
       leaveTypeError: (clearLeaveTypeError || clearAllErrors) ? null : (leaveTypeError ?? this.leaveTypeError),

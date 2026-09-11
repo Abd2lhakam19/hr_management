@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entity/leave.dart';
-import '../../domain/entity/leave_balance.dart';
-import '../../domain/entity/leave_status.dart';
+import '../../../domain/entity/leave.dart';
+import '../../../domain/entity/leave_balance.dart';
+import '../../../domain/entity/leave_status.dart';
 
 
 class LeaveSummaryState extends Equatable {
